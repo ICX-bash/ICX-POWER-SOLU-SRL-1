@@ -1,0 +1,62 @@
+{
+  "version": "7",
+  "dialect": "mysql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1790441777040,
+      "tag": "0000_sleepy_mercury",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1790441955047,
+      "tag": "0001_aberrant_justin_hammer",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1790463508487,
+      "tag": "0002_cuddly_scourge",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1790505403536,
+      "tag": "0003_boring_rachel_grey",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1790505544344,
+      "tag": "0004_free_mother_askani",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1790607284114,
+      "tag": "0005_create_users_table",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "5",
+      "when": 1790612436042,
+      "tag": "0006_admin_console",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "5",
+      "when": 1790633152879,
+      "tag": "0007_client_auth",
+      "breakpoints": true
+    }
+  ]
+}

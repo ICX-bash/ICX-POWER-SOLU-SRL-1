@@ -1,0 +1,10 @@
+{
+  "nav": [
+    "Services",
+    "Studies",
+    "Partners",
+    "About"
+  ],
+  "login": "Sign in",
+  "signup": "Create account"
+}

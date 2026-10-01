@@ -1,0 +1,22 @@
+CREATE TABLE `clientAuthAccounts` (
+	`userId` int NOT NULL,
+	`email` varchar(320) NOT NULL,
+	`passwordHash` varchar(255) NOT NULL,
+	`emailVerifiedAt` timestamp,
+	`verificationTokenHash` varchar(64),
+	`verificationExpiresAt` timestamp,
+	`verificationSentAt` timestamp,
+	`passwordResetTokenHash` varchar(64),
+	`passwordResetExpiresAt` timestamp,
+	`passwordResetSentAt` timestamp,
+	`passwordChangedAt` timestamp,
+	`termsAcceptedAt` timestamp NOT NULL,
+	`privacyAcceptedAt` timestamp NOT NULL,
+	`dataProcessingAcceptedAt` timestamp NOT NULL,
+	`failedLoginAttempts` int NOT NULL DEFAULT 0,
+	`lockedUntil` timestamp,
+	`createdAt` timestamp NOT NULL DEFAULT (now()),
+	`updatedAt` timestamp NOT NULL DEFAULT (now()) ON UPDATE CURRENT_TIMESTAMP,
+	CONSTRAINT `clientAuthAccounts_userId` PRIMARY KEY(`userId`),
+	CONSTRAINT `clientAuthAccounts_email_unique` UNIQUE(`email`)
+);

@@ -1,0 +1,58 @@
+[
+  {
+    "name": "Lorondo Services SRL",
+    "logo": "/assets/lorondo-logo.jpg",
+    "description": "Partenaire opérationnel · Roumanie",
+    "link": "",
+    "legalStatus": "Vérifié sur lorondo-services.com",
+    "source": "https://lorondo-services.com/"
+  },
+  {
+    "name": "AAFT Association",
+    "logo": "/assets/aaft-official.jpg",
+    "description": "Partenaire associatif · Roumanie",
+    "link": "",
+    "legalStatus": "Association roumaine identifiée via le compte Instagram public @aaft.ro",
+    "source": "https://www.instagram.com/aaft.ro/ · https://www.facebook.com/p/Asocia%C8%9Bia-Africanilor-pentru-Fericirea-Tuturor-61556549190486/"
+  },
+  {
+    "name": "Emirates",
+    "logo": "",
+    "description": "Axe de partenariat aérien à formaliser · billets et itinéraires internationaux",
+    "link": "https://www.emirates.com/",
+    "legalStatus": "Partenariat commercial à confirmer avant publication d’une offre ou d’un lien affilié",
+    "source": "https://www.emirates.com/"
+  },
+  {
+    "name": "Turkish Airlines",
+    "logo": "",
+    "description": "Axe de partenariat aérien à formaliser · mobilité internationale",
+    "link": "https://www.turkishairlines.com/",
+    "legalStatus": "Partenariat commercial à confirmer avant publication d’une offre ou d’un lien affilié",
+    "source": "https://www.turkishairlines.com/"
+  },
+  {
+    "name": "Travelpayourts",
+    "logo": "",
+    "description": "Partenaire travel-tech proposé par ICX · vérification de l’identité et du domaine en cours",
+    "link": "",
+    "legalStatus": "Nom fourni par ICX ; partenariat et URL officielle à confirmer",
+    "source": ""
+  },
+  {
+    "name": "Réseau hôtels Afrique",
+    "logo": "",
+    "description": "Développement d’un réseau d’hébergements et de séjours en Afrique",
+    "link": "",
+    "legalStatus": "Axe de partenariat à qualifier par destination, disponibilité et conditions",
+    "source": ""
+  },
+  {
+    "name": "Partenaires miniers africains",
+    "logo": "",
+    "description": "Mise en relation et développement de sociétés minières africaines",
+    "link": "",
+    "legalStatus": "Aucun projet présenté comme validé sans audit technique, juridique, ESG et réglementaire",
+    "source": ""
+  }
+]
