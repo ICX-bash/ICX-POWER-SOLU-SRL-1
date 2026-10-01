@@ -9,4 +9,4 @@ Disallow: /inscription
 Disallow: /mot-de-passe-oublie
 Disallow: /verification-email
 
-Sitemap: https://icx-power-projet.onrender.com/sitemap.xml
+Sitemap: https://icx-power-solutions-srl-p7ks.onrender.com/sitemap.xml
