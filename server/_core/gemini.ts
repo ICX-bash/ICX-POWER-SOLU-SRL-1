@@ -6,9 +6,9 @@ export type GeminiChatMessage = {
 };
 
 const RETRYABLE_GEMINI_STATUSES = new Set([408, 425, 500, 502, 503, 504]);
-const GEMINI_MAX_ATTEMPTS = 2;
-const GEMINI_RETRY_DELAY_MS = 400;
-const GEMINI_REQUEST_TIMEOUT_MS = 20_000;
+const GEMINI_MAX_ATTEMPTS = 4;
+const GEMINI_RETRY_DELAY_MS = 750;
+const GEMINI_REQUEST_TIMEOUT_MS = 30_000;
 
 const sleep = (ms: number) =>
   new Promise<void>(resolve => setTimeout(resolve, ms));
@@ -28,8 +28,10 @@ async function requestGemini(
       if (attempt === GEMINI_MAX_ATTEMPTS) {
         throw new Error("Gemini API network request failed after retry");
       }
-      console.warn("[ai.chat] Gemini network failure; retrying once");
-      await sleep(GEMINI_RETRY_DELAY_MS);
+      console.warn(
+        `[ai.chat] Gemini network failure; retrying (${attempt}/${GEMINI_MAX_ATTEMPTS - 1})`
+      );
+      await sleep(GEMINI_RETRY_DELAY_MS * 2 ** (attempt - 1));
       continue;
     }
 
@@ -41,15 +43,16 @@ async function requestGemini(
       return response;
     }
 
-    console.warn("[ai.chat] Gemini transient upstream status; retrying once", {
+    console.warn("[ai.chat] Gemini transient upstream status; retrying", {
       status: response.status,
+      attempt,
     });
     try {
       await response.body?.cancel();
     } catch {
       // The response body may already have been consumed or settled.
     }
-    await sleep(GEMINI_RETRY_DELAY_MS);
+    await sleep(GEMINI_RETRY_DELAY_MS * 2 ** (attempt - 1));
   }
 
   throw new Error("Gemini API request failed after exhausting retries");
@@ -65,10 +68,15 @@ export async function invokeGeminiChat(input: {
     throw new Error("Gemini API key is not configured");
   }
 
-  const model = ENV.geminiModel.trim() || "gemini-2.5-flash";
-  if (!/^[a-zA-Z0-9._-]+$/.test(model)) {
+  const configuredModel = ENV.geminiModel.trim() || "gemini-3.8-flash";
+  if (!/^[a-zA-Z0-9._-]+$/.test(configuredModel)) {
     throw new Error("Gemini model name is invalid");
   }
+  // A temporary 503 on one model must not make the assistant unavailable.
+  // Keep the configured model first, then use stable Gemini-only fallbacks.
+  const models = Array.from(
+    new Set([configuredModel, "gemini-3.7-flash", "gemini-3.5-flash-lite"])
+  );
 
   // Gemini expects the first conversation turn to come from the user. The
   // client includes an assistant welcome card as its first displayed message;
@@ -81,29 +89,48 @@ export async function invokeGeminiChat(input: {
     throw new Error("Gemini chat requires at least one user message");
   }
 
-  const response = await requestGemini(
-    `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`,
-    {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-        "x-goog-api-key": apiKey,
-      },
-      body: JSON.stringify({
-        systemInstruction: { parts: [{ text: input.systemPrompt }] },
-        contents: history.map(message => ({
-          role: message.role === "assistant" ? "model" : "user",
-          parts: [{ text: message.content }],
-        })),
-        generationConfig: {
-          maxOutputTokens: input.maxOutputTokens ?? 1200,
+  let response: Response | undefined;
+  for (let index = 0; index < models.length; index++) {
+    const model = models[index];
+    response = await requestGemini(
+      `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`,
+      {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+          "x-goog-api-key": apiKey,
         },
-      }),
+        body: JSON.stringify({
+          systemInstruction: { parts: [{ text: input.systemPrompt }] },
+          contents: history.map(message => ({
+            role: message.role === "assistant" ? "model" : "user",
+            parts: [{ text: message.content }],
+          })),
+          generationConfig: {
+            maxOutputTokens: input.maxOutputTokens ?? 1200,
+          },
+        }),
+      }
+    );
+    if (response.ok || ![404, 503].includes(response.status) || index === models.length - 1) {
+      break;
     }
-  );
+    console.warn("[ai.chat] Gemini model unavailable; trying fallback model", {
+      model,
+      status: response.status,
+      nextModel: models[index + 1],
+    });
+    try {
+      await response.body?.cancel();
+    } catch {
+      // Ignore an already settled response body.
+    }
+  }
 
-  if (!response.ok) {
-    throw new Error(`Gemini API request failed with status ${response.status}`);
+  if (!response || !response.ok) {
+    throw new Error(
+      `Gemini API request failed with status ${response?.status ?? "unknown"}`
+    );
   }
 
   let payload: {
