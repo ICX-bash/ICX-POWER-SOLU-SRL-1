@@ -14,7 +14,7 @@ afterEach(() => {
 describe("invokeGeminiChat", () => {
   it("sends a server-side Gemini request and omits the initial assistant welcome", async () => {
     ENV.geminiApiKey = "test-secret-never-public";
-    ENV.geminiModel = "gemini-3.8-flash";
+    ENV.geminiModel = "gemini-2.5-flash";
     const fetchMock = vi.fn(
       async (_url: string | URL | Request, _init?: RequestInit) =>
         new Response(
@@ -39,7 +39,7 @@ describe("invokeGeminiChat", () => {
     expect(answer).toBe("Réponse de test");
     expect(fetchMock).toHaveBeenCalledOnce();
     const [url, init] = fetchMock.mock.calls[0];
-    expect(String(url)).toContain("/models/gemini-3.8-flash:generateContent");
+    expect(String(url)).toContain("/models/gemini-2.5-flash:generateContent");
     expect(init?.headers).toMatchObject({
       "x-goog-api-key": "test-secret-never-public",
     });

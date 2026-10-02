@@ -1418,7 +1418,7 @@ export const appRouter = router({
           configured: Boolean(ENV.llmApiKey.trim()),
           run: async () => {
             const result = await invokeLLM({
-              model: "gpt-5",
+              model: "gpt-5-mini",
               reasoning: { effort: "medium" },
               maxCompletionTokens: 1200,
               messages: [

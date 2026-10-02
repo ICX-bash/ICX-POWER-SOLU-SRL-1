@@ -3,9 +3,19 @@ const forgeApiKey = (process.env.BUILT_IN_FORGE_API_KEY ?? "").trim();
 const openAiApiBase = (process.env.OPENAI_API_BASE ?? "").trim();
 const openAiApiKey = (process.env.OPENAI_API_KEY ?? "").trim();
 const geminiApiKey = (process.env.GEMINI_API_KEY ?? "").trim();
-const geminiModel = (process.env.GEMINI_MODEL ?? "gemini-3.8-flash").trim();
+const geminiModel = (process.env.GEMINI_MODEL ?? "gemini-2.5-flash").trim();
+const validBaseUrl = (value: string, fallback: string) => {
+  try {
+    const url = new URL(value);
+    return url.protocol === "http:" || url.protocol === "https:"
+      ? value.replace(/\/+$/, "")
+      : fallback;
+  } catch {
+    return fallback;
+  }
+};
 const aiPreferredProvider =
-  (process.env.AI_PREFERRED_PROVIDER ?? "gemini").trim().toLowerCase() ===
+  (process.env.AI_PREFERRED_PROVIDER ?? "llm").trim().toLowerCase() ===
   "gemini"
     ? "gemini"
     : "llm";
@@ -34,7 +44,7 @@ export const ENV = {
   forgeApiKey: process.env.BUILT_IN_FORGE_API_KEY ?? "",
   // Chat can use the Forge pair, or a standard OpenAI-compatible server-side pair.
   llmApiUrl: useForgeForLlm
-    ? forgeApiUrl || "https://forge.manus.im"
+    ? validBaseUrl(forgeApiUrl, "https://forge.manus.im")
     : openAiApiBase ||
       (openAiApiKey ? "https://api.openai.com/v1" : "https://forge.manus.im"),
   llmApiKey: useForgeForLlm

@@ -18,7 +18,7 @@ vi.mock("./_core/env", async importOriginal => {
       ...actual.ENV,
       llmApiKey: actual.ENV.llmApiKey || "test-primary-key",
       geminiApiKey: "test-gemini-key",
-      geminiModel: "gemini-3.8-flash",
+      geminiModel: "gemini-2.5-flash",
       aiPreferredProvider: "gemini",
       aiEnableFallback: false,
     },
@@ -74,7 +74,7 @@ describe("ai.chat", () => {
     expect(result).toEqual({ content: "Réponse ICX test" });
     expect(invokeLLM).toHaveBeenCalledWith(
       expect.objectContaining({
-        model: "gpt-5",
+        model: "gpt-5-mini",
         reasoning: { effort: "medium" },
         maxCompletionTokens: 1200,
       })

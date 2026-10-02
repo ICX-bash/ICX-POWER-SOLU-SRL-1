@@ -44,10 +44,10 @@ services:
       - key: BUILT_IN_FORGE_API_KEY
         sync: false
       - key: AI_PREFERRED_PROVIDER
-        value: gemini
+        value: llm
       - key: AI_ENABLE_FALLBACK
         value: "false"
       - key: GEMINI_API_KEY
         sync: false
       - key: GEMINI_MODEL
-        value: gemini-3.8-flash
+        value: gemini-flash-latest

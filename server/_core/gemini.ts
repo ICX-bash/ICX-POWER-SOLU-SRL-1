@@ -65,7 +65,7 @@ export async function invokeGeminiChat(input: {
     throw new Error("Gemini API key is not configured");
   }
 
-  const model = ENV.geminiModel.trim() || "gemini-3.8-flash";
+  const model = ENV.geminiModel.trim() || "gemini-2.5-flash";
   if (!/^[a-zA-Z0-9._-]+$/.test(model)) {
     throw new Error("Gemini model name is invalid");
   }
