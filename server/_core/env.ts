@@ -15,7 +15,7 @@ const validBaseUrl = (value: string, fallback: string) => {
   }
 };
 const aiPreferredProvider =
-  (process.env.AI_PREFERRED_PROVIDER ?? "llm").trim().toLowerCase() ===
+  (process.env.AI_PREFERRED_PROVIDER ?? "gemini").trim().toLowerCase() ===
   "gemini"
     ? "gemini"
     : "llm";

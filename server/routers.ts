@@ -1450,8 +1450,10 @@ export const appRouter = router({
           ? preferredProviders
           : preferredProviders.slice(0, 1);
 
+        const attemptedProviders: string[] = [];
         for (const provider of providers) {
           if (!provider.configured) continue;
+          attemptedProviders.push(provider.name);
           try {
             return { content: await provider.run() };
           } catch (error) {
@@ -1464,11 +1466,12 @@ export const appRouter = router({
           }
         }
 
-        console.error("[ai.chat] No working provider is configured", {
+        console.error("[ai.chat] No working AI provider is available", {
           primaryConfigured: Boolean(ENV.llmApiKey.trim()),
           geminiConfigured: Boolean(ENV.geminiApiKey.trim()),
           preferredProvider: ENV.aiPreferredProvider,
           fallbackEnabled: ENV.aiEnableFallback,
+          attemptedProviders,
         });
         throw new TRPCError({
           code: "SERVICE_UNAVAILABLE",

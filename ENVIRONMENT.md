@@ -17,6 +17,9 @@ Configurez les variables dans **Render → Web Service → Environment**. N’en
 | `BREVO_FROM_NAME` / `BREVO_FROM_EMAIL` | Nom et expéditeur; le domaine d’envoi doit être vérifié dans Brevo. |
 | `BREVO_REPLY_TO` | Adresse de réponse, souvent `icxps.sale@outlook.com`. |
 | `BUILT_IN_FORGE_API_URL` / `BUILT_IN_FORGE_API_KEY` | Stockage Forge utilisé actuellement pour les pièces jointes du portail. |
+| `AI_PREFERRED_PROVIDER` | `gemini` pour le mode gratuit Gemini seul; `llm` uniquement si un fournisseur LLM primaire est volontairement configuré. |
+| `AI_ENABLE_FALLBACK` | `false` pour ne jamais appeler automatiquement un fournisseur secondaire potentiellement payant. |
+| `GEMINI_API_KEY` / `GEMINI_MODEL` | Clé serveur Google AI Studio et modèle Gemini; requis lorsque `AI_PREFERRED_PROVIDER=gemini`. |
 | `OAUTH_SERVER_URL` | Valeur historique Manus côté serveur; elle n’est plus utilisée par la connexion client. `VITE_APP_ID` et `VITE_OAUTH_PORTAL_URL` ne sont plus requis. |
 
 La connexion client utilise le compte local vérifié par e-mail; elle ne dépend pas de Manus. Microsoft/Entra reste réservé à la console `/admin`. Les comptes client n’obtiennent pas d’accès admin, même si un rôle ancien apparaît en base.
